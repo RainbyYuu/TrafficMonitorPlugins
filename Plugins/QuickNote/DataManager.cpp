@@ -5,6 +5,8 @@
 #include <vector>
 #include <sstream>
 #include "../utilities/bass64/base64.h"
+#include <locale>
+#include <codecvt>
 
 CDataManager CDataManager::m_instance;
 
@@ -18,6 +20,7 @@ CDataManager::CDataManager()
 
 CDataManager::~CDataManager()
 {
+    SaveConfig();
 }
 
 CDataManager& CDataManager::Instance()
@@ -50,7 +53,7 @@ const std::vector<std::wstring>& CDataManager::GetNotes() const
 {
     return m_setting_data.m_notes;
 }
-
+/*
 void CDataManager::LoadConfig()
 {
     std::wifstream file(GetConfigPath());
@@ -63,6 +66,7 @@ void CDataManager::LoadConfig()
         if (!line.empty())
             m_setting_data.m_notes.push_back(line);
     }
+    file.close();  // 显式关闭
 }
 
 void CDataManager::SaveConfig() const
@@ -75,6 +79,49 @@ void CDataManager::SaveConfig() const
     {
         file << note << std::endl;
     }
+
+    file.flush();  // 刷新缓冲区
+    file.close();  // 显式关闭
+}
+*/
+
+void CDataManager::LoadConfig() {
+    // 打开文件时指定UTF-8编码模式
+    std::wifstream file(GetConfigPath());
+    if (!file)
+        return;
+
+    // 设置本地化和UTF-8编码
+    file.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+
+    std::wstring line;
+    while (std::getline(file, line))
+    {
+        if (!line.empty())
+            m_setting_data.m_notes.push_back(line);
+    }
+    file.close();
+}
+
+void CDataManager::SaveConfig() const {
+    // 打开文件时指定UTF-8编码模式
+    std::wofstream file(GetConfigPath());
+    if (!file)
+        return;
+
+    // 设置本地化和UTF-8编码
+    file.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+
+    // 可选：添加BOM标记使某些Windows应用更好地识别UTF-8
+    // const wchar_t BOM = 0xFEFF;
+    // file << BOM;
+
+    for (const auto& note : m_setting_data.m_notes)
+    {
+        file << note << std::endl;
+    }
+    file.flush();
+    file.close();
 }
 
 std::wstring CDataManager::GetConfigPath() const

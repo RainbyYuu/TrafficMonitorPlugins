@@ -11,7 +11,7 @@ CQuickNoteItem::~CQuickNoteItem()
 
 const wchar_t* CQuickNoteItem::GetItemName() const
 {
-    return L"biji11";
+    return L"¿ì½Ý±Ê¼Ç";
 }
 
 const wchar_t* CQuickNoteItem::GetItemId() const

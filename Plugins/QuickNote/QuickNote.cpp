@@ -10,13 +10,13 @@ CQuickNote::CQuickNote()
 {
     // 初始化成员变量
     //m_data_manager = std::make_unique<CDataManager>();
-    g_data.LoadConfig();  // 加载配置
+    //g_data.LoadConfig();  // 加载配置
 
 }
 
 CQuickNote::~CQuickNote()
 {
-    g_data.SaveConfig();  // 保存配置
+    //g_data.SaveConfig();  // 保存配置
 }
 
 CQuickNote& CQuickNote::Instance()
@@ -52,7 +52,7 @@ const wchar_t* CQuickNote::GetInfo(PluginInfoIndex index)
     switch (index)
     {
     case TMI_NAME:
-        return L"quick note";
+        return L"快捷笔记";
     case TMI_DESCRIPTION:
         return L"This is a tool for notes";
     case TMI_AUTHOR:
@@ -197,7 +197,7 @@ ITMPlugin::OptionReturn CQuickNote::ShowOptionsDialog(void* hParent)
     
     if (dlg.DoModal() == IDOK)
     {
-        g_data.m_setting_data = dlg.m_data;
+        //g_data.m_setting_data = dlg.m_data;
         g_data.SaveConfig();
         return ITMPlugin::OR_OPTION_CHANGED;
     }
