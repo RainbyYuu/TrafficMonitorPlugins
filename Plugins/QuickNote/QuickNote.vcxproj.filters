@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="DataManager">
+      <UniqueIdentifier>{1a7ae722-cca3-4bb1-b4e1-7f89ca4a15d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="QuickNote">
+      <UniqueIdentifier>{61fde9b7-c86f-48f6-b38c-738880891f9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="QuickNoteItem">
+      <UniqueIdentifier>{80f1933e-44e6-4be4-95b0-a8c6c47972c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="对话框">
+      <UniqueIdentifier>{4dee768b-6056-4627-a3c8-8fb50ed1eda8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManager.h">
+      <Filter>DataManager</Filter>
+    </ClInclude>
+    <ClInclude Include="QuickNote.h">
+      <Filter>QuickNote</Filter>
+    </ClInclude>
+    <ClInclude Include="QuickNoteItem.h">
+      <Filter>QuickNoteItem</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsDlg.h">
+      <Filter>对话框</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>DataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="QuickNote.cpp">
+      <Filter>QuickNote</Filter>
+    </ClCompile>
+    <ClCompile Include="QuickNoteItem.cpp">
+      <Filter>QuickNoteItem</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsDlg.cpp">
+      <Filter>对话框</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="QuickNote.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\edgeDownload\ico\auto_page.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\..\edgeDownload\ico\clear.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\..\edgeDownload\ico\cmd.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\..\edgeDownload\ico\hide.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\..\edgeDownload\ico\max.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\..\edgeDownload\ico\new.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\..\edgeDownload\ico\save.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
