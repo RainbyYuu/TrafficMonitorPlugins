@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AddNoteDlg.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="OptionsDlg.h" />
@@ -150,8 +151,11 @@
     <ClInclude Include="QuickNote.h" />
     <ClInclude Include="QuickNoteItem.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="SQLiteHelper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddNoteDlg.cpp" />
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="OptionsDlg.cpp" />
     <ClCompile Include="pch.cpp">
@@ -162,6 +166,10 @@
     </ClCompile>
     <ClCompile Include="QuickNote.cpp" />
     <ClCompile Include="QuickNoteItem.cpp" />
+    <ClCompile Include="sqlite3.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SQLiteHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="QuickNote.rc" />

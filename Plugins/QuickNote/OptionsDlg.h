@@ -24,10 +24,12 @@ protected:
 
     afx_msg void OnAddNote();
     afx_msg void OnDeleteNote();
+    afx_msg void OnLbnDblclkNotesList();
+    afx_msg void OnLvnItemActivateNotesList(NMHDR* pNMHDR, LRESULT* pResult);
     void UpdateNotesList();
 
     DECLARE_MESSAGE_MAP()
 
 private:
-    //CDataManager* m_data_manager;
+    CListCtrl m_notesList; // 声明与 IDC_NOTES_LIST 关联的成员变量
 };

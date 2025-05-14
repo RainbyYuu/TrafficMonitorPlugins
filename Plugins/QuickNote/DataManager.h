@@ -3,12 +3,12 @@
 #include <map>
 #include <vector>
 #include "resource.h"
+#include "SQLiteHelper.h"
 
 #define g_data CDataManager::Instance()
 
-struct SettingData
-{
-    vector<std::wstring> m_notes; // ±Ê¼Ç
+struct SettingData {
+    std::vector<NoteData> m_notes; // SQLite·½Ê½´æ´¢
 };
 
 class CDataManager
@@ -29,14 +29,17 @@ public:
     void AddNote(const std::wstring& note);
     void DeleteNote(size_t index);
     void ClearNotes();
-    const std::vector<std::wstring>& GetNotes() const;
+    const std::vector<NoteData>& GetNotes() const;
+    bool InitDatabase();
+    void UpdateNoteTextById(int noteId, const std::wstring& newText);
 
     SettingData m_setting_data;
 
 private:
-    std::wstring GetConfigPath() const;
+    std::wstring GetDBPath() const;
     std::map<UINT, HICON> m_icons;
     std::map<UINT, CString> m_string_table;
     static CDataManager m_instance;
     int m_dpi{ 96 };
+    SQLiteHelper m_db;
 };

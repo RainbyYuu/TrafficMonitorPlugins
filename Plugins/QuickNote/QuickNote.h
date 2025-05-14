@@ -34,14 +34,8 @@ private:
     //std::unique_ptr<CDataManager> m_data_manager;
     enum CommandIndex
     {
-        CMD_NEW,
         CMD_SAVE,
         CMD_CLEAR,
-        CMD_CMD_MODE,
-        CMD_HIDE,
-        CMD_MAX,
-        CMD_AUTO_PAGE,
-        CMD_COUNT  // 用于获取命令总数
     };
 };
 

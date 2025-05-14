@@ -25,6 +25,9 @@
     <Filter Include="对话框">
       <UniqueIdentifier>{4dee768b-6056-4627-a3c8-8fb50ed1eda8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SQLiteHelper">
+      <UniqueIdentifier>{d02280d7-ab26-43f8-a7e5-df87168d65ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -48,6 +51,15 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="AddNoteDlg.h">
+      <Filter>对话框</Filter>
+    </ClInclude>
+    <ClInclude Include="sqlite3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SQLiteHelper.h">
+      <Filter>SQLiteHelper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -64,6 +76,15 @@
     </ClCompile>
     <ClCompile Include="OptionsDlg.cpp">
       <Filter>对话框</Filter>
+    </ClCompile>
+    <ClCompile Include="AddNoteDlg.cpp">
+      <Filter>对话框</Filter>
+    </ClCompile>
+    <ClCompile Include="sqlite3.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLiteHelper.cpp">
+      <Filter>SQLiteHelper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -75,13 +75,12 @@ void CQuickNote::OnExtenedInfo(ExtendedInfoIndex index, const wchar_t* data)
     switch (index)
     {
     case ITMPlugin::EI_CONFIG_DIR:
-        //从配置文件读取配置
-        g_data.LoadConfig();
-        //启动一个定时器
-        /*SetTimer(NULL, 1265, 50, [](HWND, UINT, UINT_PTR, DWORD) {
-            m_instance.DoDataAcquire();
-            });*/
+        
+        if (!g_data.InitDatabase()) {
+            AfxMessageBox(L"无法初始化SQLite数据库！");
+        }
 
+        g_data.LoadConfig();
         break;
     default:
         break;
@@ -103,20 +102,10 @@ const wchar_t* CQuickNote::GetCommandName(int command_index)
     CommandIndex index = static_cast<CommandIndex>(command_index);
     switch (index)
     {
-    case CQuickNote::CMD_NEW:
-        return g_data.StringRes(IDI_ICON6);
     case CQuickNote::CMD_SAVE:
-        return g_data.StringRes(IDI_ICON7);
+        return L"保存";
     case CQuickNote::CMD_CLEAR:
-        return g_data.StringRes(IDI_ICON2);
-    case CQuickNote::CMD_CMD_MODE:
-        return g_data.StringRes(IDI_ICON3);
-    case CQuickNote::CMD_HIDE:
-        return g_data.StringRes(IDI_ICON4);
-    case CQuickNote::CMD_MAX:
-        return g_data.StringRes(IDI_ICON5);
-    case CQuickNote::CMD_AUTO_PAGE:
-        return g_data.StringRes(IDI_ICON1);
+        return L"清空笔记";
     }
     return nullptr;
 }
@@ -126,20 +115,10 @@ void* CQuickNote::GetCommandIcon(int command_index)
     CommandIndex index = static_cast<CommandIndex>(command_index);
     switch (index)
     {
-    case CQuickNote::CMD_NEW:
-        return g_data.GetIcon(IDI_ICON6);
     case CQuickNote::CMD_SAVE:
         return g_data.GetIcon(IDI_ICON7);
-    case CQuickNote::CMD_CLEAR:
-        return g_data.GetIcon(IDI_ICON2);
-    case CQuickNote::CMD_CMD_MODE:
-        return g_data.GetIcon(IDI_ICON3);
-    case CQuickNote::CMD_HIDE:
-        return g_data.GetIcon(IDI_ICON4);
-    case CQuickNote::CMD_MAX:
-        return g_data.GetIcon(IDI_ICON5);
-    case CQuickNote::CMD_AUTO_PAGE:
-        return g_data.GetIcon(IDI_ICON1);
+	case CQuickNote::CMD_CLEAR:
+		return g_data.GetIcon(IDI_ICON4);
     }
     return nullptr;
 }
@@ -149,26 +128,11 @@ void CQuickNote::OnPluginCommand(int command_index, void* hWnd, void* para)
     CommandIndex index = static_cast<CommandIndex>(command_index);
     switch (index)
     {
-    case CMD_NEW:
-        g_data.AddNote(L"New Note");
-        break;
     case CMD_SAVE:
         g_data.SaveConfig();
         break;
     case CMD_CLEAR:
         g_data.ClearNotes();
-        break;
-    case CMD_CMD_MODE:
-        m_item.ProcessCommand(L"/cmd");
-        break;
-    case CMD_HIDE:
-        // 处理隐藏命令
-        break;
-    case CMD_MAX:
-        // 处理最大化命令
-        break;
-    case CMD_AUTO_PAGE:
-        // 处理自动翻页命令
         break;
     default:
         break;

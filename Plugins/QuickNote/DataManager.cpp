@@ -7,6 +7,7 @@
 #include "../utilities/bass64/base64.h"
 #include <locale>
 #include <codecvt>
+#include <ctime>
 
 CDataManager CDataManager::m_instance;
 
@@ -20,7 +21,7 @@ CDataManager::CDataManager()
 
 CDataManager::~CDataManager()
 {
-    SaveConfig();
+    
 }
 
 CDataManager& CDataManager::Instance()
@@ -28,103 +29,56 @@ CDataManager& CDataManager::Instance()
     return m_instance;
 }
 
-void CDataManager::AddNote(const std::wstring& note)
+void CDataManager::LoadConfig()
 {
-    m_setting_data.m_notes.push_back(note);
-    SaveConfig();
+    m_setting_data.m_notes = m_db.GetAllNotes();
 }
 
-void CDataManager::DeleteNote(size_t index)
-{
+
+void CDataManager::SaveConfig() const {
+    // 不再需要手动保存，每个操作即写入数据库
+}
+
+void CDataManager::AddNote(const std::wstring& note) {
+    m_db.InsertNote(note);
+    LoadConfig(); // 重新加载更新UI
+}
+
+void CDataManager::DeleteNote(size_t index) {
     if (index < m_setting_data.m_notes.size())
     {
-        m_setting_data.m_notes.erase(m_setting_data.m_notes.begin() + index);
-        SaveConfig();
+        int id = m_setting_data.m_notes[index].id;
+        m_db.DeleteNote(id);
+        LoadConfig();
     }
 }
 
-void CDataManager::ClearNotes()
-{
-    m_setting_data.m_notes.clear();
-    SaveConfig();
+void CDataManager::ClearNotes() {
+    for (const auto& note : m_setting_data.m_notes)
+        m_db.DeleteNote(note.id);
+    LoadConfig();
 }
 
-const std::vector<std::wstring>& CDataManager::GetNotes() const
+const std::vector<NoteData>& CDataManager::GetNotes() const
 {
     return m_setting_data.m_notes;
 }
-/*
-void CDataManager::LoadConfig()
+
+bool CDataManager::InitDatabase() {
+    return m_db.Init(GetDBPath());
+}
+
+void CDataManager::UpdateNoteTextById(int noteId, const std::wstring& newText)
 {
-    std::wifstream file(GetConfigPath());
-    if (!file)
-        return;
+    CString updateTime = CTime::GetCurrentTime().Format(L"%Y-%m-%d %H:%M:%S");
 
-    std::wstring line;
-    while (std::getline(file, line))
-    {
-        if (!line.empty())
-            m_setting_data.m_notes.push_back(line);
-    }
-    file.close();  // 显式关闭
+    std::wstring sql = L"UPDATE notes SET note_text = ?, update_time = ? WHERE id = ?";
+    m_db.Execute(sql, { newText, (LPCWSTR)updateTime, std::to_wstring(noteId) });
+
+    LoadConfig(); // 重新加载内存数据
 }
 
-void CDataManager::SaveConfig() const
-{
-    std::wofstream file(GetConfigPath());
-    if (!file)
-        return;
-
-    for (const auto& note : m_setting_data.m_notes)
-    {
-        file << note << std::endl;
-    }
-
-    file.flush();  // 刷新缓冲区
-    file.close();  // 显式关闭
-}
-*/
-
-void CDataManager::LoadConfig() {
-    // 打开文件时指定UTF-8编码模式
-    std::wifstream file(GetConfigPath());
-    if (!file)
-        return;
-
-    // 设置本地化和UTF-8编码
-    file.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-
-    std::wstring line;
-    while (std::getline(file, line))
-    {
-        if (!line.empty())
-            m_setting_data.m_notes.push_back(line);
-    }
-    file.close();
-}
-
-void CDataManager::SaveConfig() const {
-    // 打开文件时指定UTF-8编码模式
-    std::wofstream file(GetConfigPath());
-    if (!file)
-        return;
-
-    // 设置本地化和UTF-8编码
-    file.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-
-    // 可选：添加BOM标记使某些Windows应用更好地识别UTF-8
-    // const wchar_t BOM = 0xFEFF;
-    // file << BOM;
-
-    for (const auto& note : m_setting_data.m_notes)
-    {
-        file << note << std::endl;
-    }
-    file.flush();
-    file.close();
-}
-
-std::wstring CDataManager::GetConfigPath() const
+std::wstring CDataManager::GetDBPath() const
 {
     wchar_t appData[MAX_PATH];
     if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, appData)))
@@ -132,7 +86,7 @@ std::wstring CDataManager::GetConfigPath() const
         std::wstring path = appData;
         path += L"\\TrafficMonitor\\QuickNote";
         CreateDirectory(path.c_str(), NULL);
-        return path + L"\\notes.txt";
+        return path + L"\\notes.db";
     }
     return L"";
 }
