@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "QuickNoteItem.h"
 #include "DataManager.h"
+#include "QuickNote.h"
 
 CQuickNoteItem::CQuickNoteItem()
 {
@@ -58,50 +59,29 @@ void CQuickNoteItem::DrawItem(void* hDC, int x, int y, int w, int h, bool dark_m
     //矩形区域
     CRect rect(CPoint(x, y), CSize(w, h));
     //TODO: 在此添加绘图代码
-     // 背景色
-    COLORREF bgColor = dark_mode ? RGB(40, 40, 40) : RGB(255, 255, 255);
-    COLORREF textColor = dark_mode ? RGB(230, 230, 230) : RGB(0, 0, 0);
 
-    // 填充背景
-    pDC->FillSolidRect(rect, bgColor);
-
-    // 获取图标，假设你在资源里有 IDI_NOTE_ICON
     HICON hIcon = g_data.GetIcon(IDI_ICON6); // 或 LoadIcon 等
 
-    const int iconSize = 6; // 图标大小
-    int iconX = rect.left + 6;
-    int iconY = rect.top + (rect.Height() - iconSize) / 2;
+    const int icon_size{ g_data.DPI(16) };
+    CPoint icon_point{ rect.TopLeft() };
+    icon_point.x = rect.left + g_data.DPI(2);
+    icon_point.y = rect.top + (rect.Height() - icon_size) / 2;
+    ::DrawIconEx(pDC->GetSafeHdc(), icon_point.x, icon_point.y, hIcon, icon_size, icon_size, 0, NULL, DI_NORMAL);
 
-    // 绘制图标
-    if (hIcon)
-    {
-        pDC->DrawIcon(iconX, iconY, hIcon);
-    }
-
-    // 设置文字位置
-    int textLeft = iconX + iconSize + 6;
-    CRect textRect(textLeft, rect.top, rect.right - 4, rect.bottom);
-
-    // 设置文字颜色和透明背景
-    pDC->SetTextColor(textColor);
-    pDC->SetBkMode(TRANSPARENT);
-
-    CString text = _T("笔记"); // 实际可动态设置
-
-    // 设置字体（可选）
-    CFont font;
-    font.CreatePointFont(90, _T("Segoe UI")); // 9pt 字体
-    CFont* pOldFont = pDC->SelectObject(&font);
-
-    // 绘制文字
-    pDC->DrawText(text, textRect, DT_LEFT | DT_VCENTER | DT_SINGLELINE);
-
-    // 恢复字体
-    pDC->SelectObject(pOldFont);
 }
 
 int CQuickNoteItem::OnMouseEvent(MouseEventType type, int x, int y, void* hWnd, int flag)
 {
+    CWnd* pWnd = CWnd::FromHandle((HWND)hWnd);
+    if (type == IPluginItem::MT_DBCLICKED)
+    {
+        auto& data_manager = CDataManager::Instance();
+
+        CQuickNote::Instance().ShowOptionsDialog(hWnd);
+
+        return 1;
+    }
+
     return 0;
 }
 
