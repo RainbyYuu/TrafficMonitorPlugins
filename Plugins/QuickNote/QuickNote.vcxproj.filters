@@ -28,6 +28,9 @@
     <Filter Include="SQLiteHelper">
       <UniqueIdentifier>{d02280d7-ab26-43f8-a7e5-df87168d65ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DeepseekHelper">
+      <UniqueIdentifier>{4a9237ee-93b6-45e0-8b49-1a5acc8f7243}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -60,6 +63,12 @@
     <ClInclude Include="SQLiteHelper.h">
       <Filter>SQLiteHelper</Filter>
     </ClInclude>
+    <ClInclude Include="DeepseekHelper.h">
+      <Filter>DeepseekHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -85,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="SQLiteHelper.cpp">
       <Filter>SQLiteHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="DeepseekHelper.cpp">
+      <Filter>DeepseekHelper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

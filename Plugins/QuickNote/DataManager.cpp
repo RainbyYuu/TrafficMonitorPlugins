@@ -8,6 +8,9 @@
 #include <locale>
 #include <codecvt>
 #include <ctime>
+#include "DeepSeekHelper.h"
+#define MAXSUMMARYCHAR 10
+
 
 CDataManager CDataManager::m_instance;
 
@@ -40,8 +43,20 @@ void CDataManager::SaveConfig() const {
 }
 
 void CDataManager::AddNote(const std::wstring& note) {
-    m_db.InsertNote(note);
-    LoadConfig(); // 重新加载更新UI
+    std::wstring summary;
+    if (note.size() > MAXSUMMARYCHAR) {
+        summary = GetNoteSummary(note);  // 调用摘要函数
+    }
+    else {
+        summary = note;
+    }
+
+    m_db.InsertNoteWithSummary(note, summary);
+    LoadConfig(); // 刷新界面
+}
+
+std::wstring CDataManager::GetNoteSummary(const std::wstring& content) {
+    return DeepSeekHelper::GenerateSummary(content);
 }
 
 void CDataManager::DeleteNote(size_t index) {
@@ -72,8 +87,12 @@ void CDataManager::UpdateNoteTextById(int noteId, const std::wstring& newText)
 {
     CString updateTime = CTime::GetCurrentTime().Format(L"%Y-%m-%d %H:%M:%S");
 
-    std::wstring sql = L"UPDATE notes SET note_text = ?, update_time = ? WHERE id = ?";
-    m_db.Execute(sql, { newText, (LPCWSTR)updateTime, std::to_wstring(noteId) });
+    std::wstring summary = (newText.length() > 50)
+        ? DeepSeekHelper::GenerateSummary(newText)
+        : newText;
+
+    std::wstring sql = L"UPDATE notes SET note_text = ?, summary = ?, update_time = ? WHERE id = ?";
+    m_db.Execute(sql, { newText, summary, (LPCWSTR)updateTime, std::to_wstring(noteId) });
 
     LoadConfig(); // 重新加载内存数据
 }

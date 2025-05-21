@@ -73,16 +73,31 @@ void COptionsDlg::OnAddNote()
 
 void COptionsDlg::OnDeleteNote()
 {
-    CListBox* pList = (CListBox*)GetDlgItem(IDC_NOTES_LIST);
-    if (pList)
+    CListCtrl* pList = (CListCtrl*)GetDlgItem(IDC_NOTES_LIST);
+    POSITION pos = pList->GetFirstSelectedItemPosition();
+    if (pos)
     {
-        int sel = pList->GetCurSel();
-        if (sel != LB_ERR)
+        int sel = pList->GetNextSelectedItem(pos);
+        //CString str = pList->GetItemText(sel, 0);  // 取第一列文本
+        //CString msg;
+        //msg.Format(L"你选中了第 %d 行: %s", sel + 1, str);
+        //MessageBox(msg, L"调试信息");
+        if (pList)
         {
-            g_data.DeleteNote(sel);
-            UpdateNotesList();
+            if (sel != -1)
+            {
+                // 弹出确认对话框
+                int result = MessageBox(L"确定要删除这条笔记吗？", L"提示", MB_YESNO | MB_ICONQUESTION);
+                if (result == IDYES)
+                {
+                    g_data.DeleteNote(sel);
+                    UpdateNotesList();
+                }
+                // 否则不做任何操作
+            }
         }
     }
+
 }
 
 void COptionsDlg::OnLvnItemActivateNotesList(NMHDR* pNMHDR, LRESULT* pResult)
@@ -97,6 +112,7 @@ void COptionsDlg::OnLvnItemActivateNotesList(NMHDR* pNMHDR, LRESULT* pResult)
 
         // 打开编辑对话框
         CAddNoteDlg dlg(this);
+
         dlg.m_strNote = note.text.c_str(); // 填入原始笔记内容
 
         if (dlg.DoModal() == IDOK)
@@ -122,9 +138,9 @@ void COptionsDlg::UpdateNotesList()
     int index = 0;
     for (const auto& note : notes)
     {
-        m_notesList.InsertItem(index, note.text.c_str()); // 第1列：内容
-        m_notesList.SetItemText(index, 1, note.createTime.c_str()); // 第2列：创建时间
-        m_notesList.SetItemText(index, 2, note.updateTime.c_str()); // 第3列：修改时间
+        m_notesList.InsertItem(index, note.summary.c_str()); // 显示摘要而非正文
+        m_notesList.SetItemText(index, 1, note.createTime.c_str());
+        m_notesList.SetItemText(index, 2, note.updateTime.c_str());
         ++index;
     }
 }

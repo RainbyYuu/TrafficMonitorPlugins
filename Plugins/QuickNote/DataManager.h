@@ -32,6 +32,7 @@ public:
     const std::vector<NoteData>& GetNotes() const;
     bool InitDatabase();
     void UpdateNoteTextById(int noteId, const std::wstring& newText);
+    std::wstring GetNoteSummary(const std::wstring& content);
 
     SettingData m_setting_data;
 
