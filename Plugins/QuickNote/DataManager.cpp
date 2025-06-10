@@ -35,6 +35,7 @@ CDataManager& CDataManager::Instance()
 void CDataManager::LoadConfig()
 {
     m_setting_data.m_notes = m_db.GetAllNotes();
+    m_setting_data.category = m_db.GetAllCategories();
 }
 
 
@@ -42,7 +43,7 @@ void CDataManager::SaveConfig() const {
     // 不再需要手动保存，每个操作即写入数据库
 }
 
-void CDataManager::AddNote(const std::wstring& note) {
+void CDataManager::AddNote(const std::wstring& note, const int& category_id) {
     std::wstring summary;
     if (note.size() > MAXSUMMARYCHAR) {
         summary = GetNoteSummary(note);  // 调用摘要函数
@@ -51,12 +52,34 @@ void CDataManager::AddNote(const std::wstring& note) {
         summary = note;
     }
 
-    m_db.InsertNoteWithSummary(note, summary);
+    m_db.InsertNoteWithSummary(note, summary, category_id);
+    LoadConfig(); // 刷新界面
+}
+
+void CDataManager::AddCategory(const std::wstring& category)
+{
+    m_db.InsertCategory(category);
     LoadConfig(); // 刷新界面
 }
 
 std::wstring CDataManager::GetNoteSummary(const std::wstring& content) {
     return DeepSeekHelper::GenerateSummary(content);
+}
+
+std::vector<NoteData> CDataManager::SearchNotes(const std::wstring& content)
+{
+    return m_db.SearchNotes(content);
+}
+
+std::vector<NoteData> CDataManager::getNotesWithCategoryId(int categoryId)
+{
+    return m_db.getNotesWithCategoryId(categoryId);
+}
+
+void CDataManager::DeleteByCategoryId(int categoryId)
+{
+    m_db.DeleteNotesByCategoryId(categoryId);
+    m_db.DeleteCategory(categoryId);
 }
 
 void CDataManager::DeleteNote(size_t index) {
@@ -83,7 +106,7 @@ bool CDataManager::InitDatabase() {
     return m_db.Init(GetDBPath());
 }
 
-void CDataManager::UpdateNoteTextById(int noteId, const std::wstring& newText)
+void CDataManager::UpdateNoteTextById(int noteId, const std::wstring& newText, int categoryId)
 {
     CString updateTime = CTime::GetCurrentTime().Format(L"%Y-%m-%d %H:%M:%S");
 
@@ -91,10 +114,15 @@ void CDataManager::UpdateNoteTextById(int noteId, const std::wstring& newText)
         ? DeepSeekHelper::GenerateSummary(newText)
         : newText;
 
-    std::wstring sql = L"UPDATE notes SET note_text = ?, summary = ?, update_time = ? WHERE id = ?";
-    m_db.Execute(sql, { newText, summary, (LPCWSTR)updateTime, std::to_wstring(noteId) });
+    std::wstring sql = L"UPDATE notes SET note_text = ?, summary = ?, update_time = ?, category_id = ? WHERE id = ?";
+    m_db.Execute(sql, { newText, summary, (LPCWSTR)updateTime, std::to_wstring(categoryId), std::to_wstring(noteId) });
 
     LoadConfig(); // 重新加载内存数据
+}
+
+int CDataManager::searchByCategory(const int& categoryId)
+{
+    return m_db.searchByCategory(categoryId);
 }
 
 std::wstring CDataManager::GetDBPath() const

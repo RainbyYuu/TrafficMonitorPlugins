@@ -8,8 +8,9 @@ class COptionsDlg : public CDialog
 
 public:
     //COptionsDlg(CDataManager* data_manager, CWnd* pParent = nullptr);
-    COptionsDlg(CWnd* pParent = nullptr);   // 标准构造函数
+    COptionsDlg(CWnd* pParent = nullptr, int categoryId = 1);   // 标准构造函数
     virtual ~COptionsDlg();
+    void setCategoryId(int categoryId);
 
     SettingData m_data;
 
@@ -20,16 +21,17 @@ public:
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
     virtual BOOL OnInitDialog();
-    virtual void OnOK();
 
     afx_msg void OnAddNote();
     afx_msg void OnDeleteNote();
     afx_msg void OnLbnDblclkNotesList();
     afx_msg void OnLvnItemActivateNotesList(NMHDR* pNMHDR, LRESULT* pResult);
     void UpdateNotesList();
+    afx_msg void OnBnClickedReturnMain();
 
     DECLARE_MESSAGE_MAP()
 
 private:
     CListCtrl m_notesList; // 声明与 IDC_NOTES_LIST 关联的成员变量
+    int categoryId;
 };

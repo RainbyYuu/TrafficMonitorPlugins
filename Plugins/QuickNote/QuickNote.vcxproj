@@ -146,11 +146,13 @@
     <ClInclude Include="AddNoteDlg.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="DeepseekHelper.h" />
+    <ClInclude Include="EditNoteDlg.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="OptionsDlg.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="QuickNote.h" />
+    <ClInclude Include="QuickNoteDlg.h" />
     <ClInclude Include="QuickNoteItem.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="sqlite3.h" />
@@ -160,6 +162,7 @@
     <ClCompile Include="AddNoteDlg.cpp" />
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="DeepseekHelper.cpp" />
+    <ClCompile Include="EditNoteDlg.cpp" />
     <ClCompile Include="OptionsDlg.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -168,6 +171,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="QuickNote.cpp" />
+    <ClCompile Include="QuickNoteDlg.cpp" />
     <ClCompile Include="QuickNoteItem.cpp" />
     <ClCompile Include="sqlite3.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

@@ -156,8 +156,7 @@ ITMPlugin::OptionReturn CQuickNote::ShowOptionsDialog(void* hParent)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     CWnd* pParent = CWnd::FromHandle((HWND)hParent);
-    COptionsDlg dlg(pParent);
-    dlg.m_data = g_data.m_setting_data;
+    COptionsDlg dlg(pParent, 1);
     
     if (dlg.DoModal() == IDOK)
     {
@@ -166,13 +165,7 @@ ITMPlugin::OptionReturn CQuickNote::ShowOptionsDialog(void* hParent)
         return ITMPlugin::OR_OPTION_CHANGED;
     }
     return ITMPlugin::OR_OPTION_UNCHANGED;
-    /*AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    COptionsDlg dlg(m_data_manager.get());
-    if (dlg.DoModal() == IDOK)
-    {
-        return OR_OPTION_CHANGED;
-    }
-    return OR_OPTION_UNCHANGED;*/
+
 }
 
 ITMPlugin* TMPluginGetInstance()

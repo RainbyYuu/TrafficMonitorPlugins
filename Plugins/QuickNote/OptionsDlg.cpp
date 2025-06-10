@@ -3,17 +3,18 @@
 #include "resource.h"
 #include "DataManager.h"
 #include "AddNoteDlg.h"
+#include "QuickNoteDlg.h"
 
-IMPLEMENT_DYNAMIC(COptionsDlg, CDialogEx)
+IMPLEMENT_DYNAMIC(COptionsDlg, CDialog)
 
 //COptionsDlg::COptionsDlg(CDataManager* data_manager, CWnd* pParent)
-//    : CDialogEx(IDD_OPTIONS_DIALOG, pParent)
+//    : CDialog(IDD_OPTIONS_DIALOG, pParent)
 //    , m_data_manager(data_manager)
 //{
 //}
 
-COptionsDlg::COptionsDlg(CWnd* pParent /*=nullptr*/)
-    : CDialog(IDD_OPTIONS_DIALOG, pParent)
+COptionsDlg::COptionsDlg(CWnd* pParent /*=nullptr*/, int categoryId)
+    : CDialog(IDD_OPTIONS_DIALOG, pParent), categoryId(categoryId)
 {
 }
 
@@ -31,12 +32,13 @@ BEGIN_MESSAGE_MAP(COptionsDlg, CDialog)
     ON_BN_CLICKED(IDC_ADD_NOTE, &COptionsDlg::OnAddNote)
     ON_BN_CLICKED(IDC_DELETE_NOTE, &COptionsDlg::OnDeleteNote)
     ON_NOTIFY(NM_DBLCLK, IDC_NOTES_LIST, &COptionsDlg::OnLvnItemActivateNotesList)
+    ON_BN_CLICKED(IDC_RETURN_MAIN, &COptionsDlg::OnBnClickedReturnMain)
 END_MESSAGE_MAP()
 
 BOOL COptionsDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    //CDialogEx::OnInitDialog();
+    //CDialog::OnInitDialog();
     m_notesList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
     m_notesList.InsertColumn(0, L"内容", LVCFMT_LEFT, 200);
     m_notesList.InsertColumn(1, L"创建时间", LVCFMT_LEFT, 150);
@@ -46,12 +48,6 @@ BOOL COptionsDlg::OnInitDialog()
     UpdateNotesList();
 
     return TRUE;
-}
-
-void COptionsDlg::OnOK()
-{
-    // 保存设置
-    CDialog::OnOK();
 }
 
 
@@ -65,7 +61,7 @@ void COptionsDlg::OnAddNote()
     {
         if (!dlg.m_strNote.IsEmpty())
         {
-            g_data.AddNote(dlg.m_strNote.GetString());
+            g_data.AddNote(dlg.m_strNote.GetString(), dlg.m_comboCategoryId);
             UpdateNotesList();
         }
     }
@@ -110,19 +106,28 @@ void COptionsDlg::OnLvnItemActivateNotesList(NMHDR* pNMHDR, LRESULT* pResult)
 
         const NoteData& note = notes[sel];
 
-        // 打开编辑对话框
-        CAddNoteDlg dlg(this);
+        CEditNoteDlg dlg(this);
 
-        dlg.m_strNote = note.text.c_str(); // 填入原始笔记内容
+        dlg.m_strNote = note.text.c_str();// 填入原始笔记内容
+
+        vector<std::pair<int, std::wstring>>ca = g_data.m_setting_data.category;
+        int cid = note.categoryId;
+        for (int i = 0; i < ca.size(); i++)
+        {
+            if (ca[i].first == cid)
+            {
+                dlg.m_strCategory = ca[i].second.c_str();
+                break;
+            }
+        }
 
         if (dlg.DoModal() == IDOK)
         {
-            // 用户点击了确定，更新数据库
-            g_data.UpdateNoteTextById(note.id, dlg.m_strNote.GetString());
+            g_data.UpdateNoteTextById(note.id, dlg.m_strNote.GetString(), note.categoryId);
 
-            // 刷新界面显示
             UpdateNotesList();
         }
+
     }
 
     *pResult = 0;
@@ -132,7 +137,7 @@ void COptionsDlg::UpdateNotesList()
 {
     m_notesList.DeleteAllItems();
 
-    const auto& notes = g_data.GetNotes();
+    const auto& notes = g_data.getNotesWithCategoryId(categoryId);
     if (notes.empty()) return;
 
     int index = 0;
@@ -142,5 +147,22 @@ void COptionsDlg::UpdateNotesList()
         m_notesList.SetItemText(index, 1, note.createTime.c_str());
         m_notesList.SetItemText(index, 2, note.updateTime.c_str());
         ++index;
+    }
+}
+
+void COptionsDlg::setCategoryId(int categoryId)
+{
+    this->categoryId = categoryId;
+}
+
+void COptionsDlg::OnBnClickedReturnMain()
+{
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+    CQuickNoteDlg dlg(this);
+    EndDialog(IDOK);
+    if (dlg.DoModal() == IDOK)
+    {
+        g_data.SaveConfig();
     }
 }

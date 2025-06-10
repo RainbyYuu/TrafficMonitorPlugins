@@ -9,6 +9,7 @@
 
 struct SettingData {
     std::vector<NoteData> m_notes; // SQLite·½Ê½´æ´¢
+    std::vector<std::pair<int, std::wstring>>category;
 };
 
 class CDataManager
@@ -26,13 +27,18 @@ public:
     float DPIF(float pixel);
     int RDPI(int pixel);
     HICON GetIcon(UINT id);
-    void AddNote(const std::wstring& note);
+    void AddNote(const std::wstring& note, const int& category_id);
+    void AddCategory(const std::wstring& category);
     void DeleteNote(size_t index);
     void ClearNotes();
     const std::vector<NoteData>& GetNotes() const;
     bool InitDatabase();
-    void UpdateNoteTextById(int noteId, const std::wstring& newText);
+    void UpdateNoteTextById(int noteId, const std::wstring& newText, int categoryId);
+    int searchByCategory(const int& categoryId);
     std::wstring GetNoteSummary(const std::wstring& content);
+    std::vector<NoteData> SearchNotes(const std::wstring& content);
+    std::vector<NoteData> getNotesWithCategoryId(int categoryId);
+    void DeleteByCategoryId(int categoryId);
 
     SettingData m_setting_data;
 
