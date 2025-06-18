@@ -215,45 +215,26 @@ std::vector<NoteData> SQLiteHelper::getNotesWithCategoryId(int categoryId)
 
 bool SQLiteHelper::DeleteNotesByCategoryId(int categoryId)
 {
-    std::string sql = "DELETE FROM notes WHERE category_id = ?";
-    sqlite3_stmt* stmt = nullptr;
-    sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, nullptr);
-    sqlite3_bind_int(stmt, 1, categoryId);
-    bool result = sqlite3_step(stmt) == SQLITE_DONE;
-    sqlite3_finalize(stmt);
-    return result;
+    std::wstring sql = L"DELETE FROM notes WHERE category_id = ?";
+    return Execute(sql, { std::to_wstring(categoryId) });
 }
 
 bool SQLiteHelper::DeleteCategory(int categoryId)
 {
-    std::string sql = "DELETE FROM category WHERE id = ?";
-    sqlite3_stmt* stmt = nullptr;
-    sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, nullptr);
-    sqlite3_bind_int(stmt, 1, categoryId);
-    bool result = sqlite3_step(stmt) == SQLITE_DONE;
-    sqlite3_finalize(stmt);
-    return result;
+    std::wstring sql = L"DELETE FROM category WHERE id = ?";
+    return Execute(sql, { std::to_wstring(categoryId) });
 }
 
 bool SQLiteHelper::DeleteNote(int id) {
-    std::string sql = "DELETE FROM notes WHERE id = ?";
-    sqlite3_stmt* stmt = nullptr;
-    sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, nullptr);
-    sqlite3_bind_int(stmt, 1, id);
-    bool result = sqlite3_step(stmt) == SQLITE_DONE;
-    sqlite3_finalize(stmt);
-    return result;
+    std::wstring sql = L"DELETE FROM notes WHERE id = ?";
+	return Execute(sql, {std::to_wstring(id)});
 }
 
-bool SQLiteHelper::UpdateNote(int id, const std::wstring& newText) {
-    std::string sql = "UPDATE notes SET note_text = ?, update_time = datetime('now','localtime') WHERE id = ?";
-    sqlite3_stmt* stmt = nullptr;
-    sqlite3_prepare_v2(m_db, sql.c_str(), -1, &stmt, nullptr);
-    sqlite3_bind_text16(stmt, 1, newText.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt, 2, id);
-    bool result = sqlite3_step(stmt) == SQLITE_DONE;
-    sqlite3_finalize(stmt);
-    return result;
+bool SQLiteHelper::UpdateNote(int id, const std::wstring& newText, const std::wstring& summary, int categoryId) {
+
+    CString updateTime = CTime::GetCurrentTime().Format(L"%Y-%m-%d %H:%M:%S");
+    std::wstring sql = L"UPDATE notes SET note_text = ?, summary = ?, update_time = ?, category_id = ? WHERE id = ?";
+    return Execute(sql, { newText, summary, (LPCWSTR)updateTime, std::to_wstring(categoryId), std::to_wstring(id) });
 }
 
 std::vector<NoteData> SQLiteHelper::GetAllNotes() {

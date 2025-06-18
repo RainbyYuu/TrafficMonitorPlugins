@@ -23,7 +23,13 @@ public:
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);
     virtual BOOL OnInitDialog();
+    void PrintNote(const CString& noteText);
     virtual void OnOK();
     afx_msg void OnCbnSelchangeCategoryOption();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg void OnBnClickedPrintButton();
     DECLARE_MESSAGE_MAP()
+private:
+    CBitmap m_bmpBackground;
+    CBrush m_brush;
 };

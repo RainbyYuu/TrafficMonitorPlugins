@@ -26,6 +26,9 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_NOTES_LIST, m_notesList);
+	DDX_Control(pDX, IDC_ADD_NOTE, m_btnAddNote);
+    DDX_Control(pDX, IDC_DELETE_NOTE, m_btnDeleteNote);
+    DDX_Control(pDX, IDC_RETURN_MAIN, m_btnReturnMain);
 }
 
 BEGIN_MESSAGE_MAP(COptionsDlg, CDialog)
@@ -33,12 +36,18 @@ BEGIN_MESSAGE_MAP(COptionsDlg, CDialog)
     ON_BN_CLICKED(IDC_DELETE_NOTE, &COptionsDlg::OnDeleteNote)
     ON_NOTIFY(NM_DBLCLK, IDC_NOTES_LIST, &COptionsDlg::OnLvnItemActivateNotesList)
     ON_BN_CLICKED(IDC_RETURN_MAIN, &COptionsDlg::OnBnClickedReturnMain)
+    ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 BOOL COptionsDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    //CDialog::OnInitDialog();
+
+    m_bmpBackground.LoadBitmap(IDB_BACKGROUND);
+    m_btnAddNote.LoadBitmaps(IDB_ADD_NORMAL,IDB_ADD_HOVER,IDB_ADD_DOWN);
+	m_btnDeleteNote.LoadBitmaps(IDB_DEL_HOVER, IDB_DEL_HOVER, IDB_DEL_DOWN);
+	m_btnReturnMain.LoadBitmaps(IDB_RETURN, IDB_RETURN, IDB_RETURN);
+
     m_notesList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
     m_notesList.InsertColumn(0, L"内容", LVCFMT_LEFT, 200);
     m_notesList.InsertColumn(1, L"创建时间", LVCFMT_LEFT, 150);
@@ -165,4 +174,38 @@ void COptionsDlg::OnBnClickedReturnMain()
     {
         g_data.SaveConfig();
     }
+}
+
+
+BOOL COptionsDlg::OnEraseBkgnd(CDC* pDC)
+{
+    if (m_bmpBackground.GetSafeHandle())
+    {
+        // 创建内存 DC 并选入位图
+        CDC memDC;
+        memDC.CreateCompatibleDC(pDC); 
+        CBitmap* pOldBmp = memDC.SelectObject(&m_bmpBackground);
+
+        // 获取对话框大小
+        CRect rect;
+        GetClientRect(&rect);
+
+        // 获取图片大小
+        BITMAP bmp = {};
+        m_bmpBackground.GetBitmap(&bmp);
+
+        // 平铺或拉伸背景
+        for (int y = 0; y < rect.Height(); y += bmp.bmHeight)
+        {
+            for (int x = 0; x < rect.Width(); x += bmp.bmWidth)
+            {
+                pDC->BitBlt(x, y, bmp.bmWidth, bmp.bmHeight, &memDC, 0, 0, SRCCOPY);
+            }
+        }
+
+        memDC.SelectObject(pOldBmp);
+        return TRUE;  // 表示我们自己处理了背景擦除
+    }
+
+    return CDialog::OnEraseBkgnd(pDC);
 }

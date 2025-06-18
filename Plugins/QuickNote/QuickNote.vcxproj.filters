@@ -75,6 +75,9 @@
     <ClInclude Include="EditNoteDlg.h">
       <Filter>对话框</Filter>
     </ClInclude>
+    <ClInclude Include="ImageButton.h">
+      <Filter>对话框</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -110,6 +113,9 @@
     <ClCompile Include="EditNoteDlg.cpp">
       <Filter>对话框</Filter>
     </ClCompile>
+    <ClCompile Include="ImageButton.cpp">
+      <Filter>对话框</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="QuickNote.rc">
@@ -136,6 +142,54 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="..\..\..\..\edgeDownload\ico\save.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\背景-10.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\BACKGROUND.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\BNG2.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\添加按钮.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\删除按钮图标.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\打印按钮.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\首页按钮.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bitmap1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\addbtn.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\addbtndown.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\addbtnhove.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\delbtndown.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\delbtnhover.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\printbtndown.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\printbtnhover.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\mainbtn.bmp">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

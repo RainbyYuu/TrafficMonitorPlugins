@@ -114,8 +114,7 @@ void CDataManager::UpdateNoteTextById(int noteId, const std::wstring& newText, i
         ? DeepSeekHelper::GenerateSummary(newText)
         : newText;
 
-    std::wstring sql = L"UPDATE notes SET note_text = ?, summary = ?, update_time = ?, category_id = ? WHERE id = ?";
-    m_db.Execute(sql, { newText, summary, (LPCWSTR)updateTime, std::to_wstring(categoryId), std::to_wstring(noteId) });
+    m_db.UpdateNote(noteId, newText, summary, categoryId);
 
     LoadConfig(); // 重新加载内存数据
 }

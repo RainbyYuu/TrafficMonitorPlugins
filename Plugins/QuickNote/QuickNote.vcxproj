@@ -148,6 +148,7 @@
     <ClInclude Include="DeepseekHelper.h" />
     <ClInclude Include="EditNoteDlg.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="ImageButton.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="OptionsDlg.h" />
     <ClInclude Include="pch.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="DeepseekHelper.cpp" />
     <ClCompile Include="EditNoteDlg.cpp" />
+    <ClCompile Include="ImageButton.cpp" />
     <ClCompile Include="OptionsDlg.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -189,6 +191,22 @@
     <Image Include="..\..\..\..\edgeDownload\ico\max.ico" />
     <Image Include="..\..\..\..\edgeDownload\ico\new.ico" />
     <Image Include="..\..\..\..\edgeDownload\ico\save.ico" />
+    <Image Include="..\..\..\BACKGROUND.bmp" />
+    <Image Include="..\..\..\bitmap1.bmp" />
+    <Image Include="..\..\..\bmp\addbtn.bmp" />
+    <Image Include="..\..\..\bmp\addbtndown.bmp" />
+    <Image Include="..\..\..\bmp\addbtnhove.bmp" />
+    <Image Include="..\..\..\bmp\delbtndown.bmp" />
+    <Image Include="..\..\..\bmp\delbtnhover.bmp" />
+    <Image Include="..\..\..\bmp\mainbtn.bmp" />
+    <Image Include="..\..\..\bmp\printbtndown.bmp" />
+    <Image Include="..\..\..\bmp\printbtnhover.bmp" />
+    <Image Include="..\..\..\BNG2.bmp" />
+    <Image Include="..\..\..\删除按钮图标.bmp" />
+    <Image Include="..\..\..\打印按钮.bmp" />
+    <Image Include="..\..\..\添加按钮.bmp" />
+    <Image Include="..\..\..\背景-10.bmp" />
+    <Image Include="..\..\..\首页按钮.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

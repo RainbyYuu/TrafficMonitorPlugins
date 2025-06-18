@@ -13,6 +13,17 @@
 #define IDD_ADDNOTE_DIALOG              108
 #define IDD_INI_DIALOG                  112
 #define IDD_EDITNOTE_DIALOG             113
+#define IDB_BACKGROUND                  120
+#define IDB_BACKGROUND2                 122
+#define IDB_ADD_NORMAL                  129
+#define IDB_ADD_DOWN                    130
+#define IDB_ADD_HOVER                   133
+#define IDB_DEL_DOWN                    134
+#define IDB_DEL_HOVER                   135
+#define IDB_PRINT_DOWN                  136
+#define IDB_PRINT_HOVER                 137
+#define IDB_RETURN_MAIN                 138
+#define IDB_RETURN                      138
 #define IDC_ADD_NOTE                    1002
 #define IDC_RETURN_MAIN                 1003
 #define IDC_NOTES_LIST                  1004
@@ -28,14 +39,15 @@
 #define IDC_BTN_DELETE                  1014
 #define IDC_BTN_SEARCH                  1015
 #define IDC_CATEGORY_OPTION             1018
+#define IDC_PRINT_BUTTON                1019
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        114
+#define _APS_NEXT_RESOURCE_VALUE        139
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1019
+#define _APS_NEXT_CONTROL_VALUE         1020
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

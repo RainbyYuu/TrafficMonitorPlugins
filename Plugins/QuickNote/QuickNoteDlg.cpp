@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(CQuickNoteDlg, CDialog)
 	ON_NOTIFY(LVN_ENDLABELEDIT, IDC_CATEGORY_LIST, &CQuickNoteDlg::OnLvnEndlabeleditListctrl)
 	ON_BN_CLICKED(IDC_BTN_OPEN, &CQuickNoteDlg::OnBnClickedBtnOpen)
 	ON_BN_CLICKED(IDC_BTN_DELETE, &CQuickNoteDlg::OnBnClickedBtnDelete)
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -173,6 +174,7 @@ void CQuickNoteDlg::OnLvnEndlabeleditListctrl(NMHDR* pNMHDR, LRESULT* pResult)
 
 		// 更新项文本
 		m_categoryList.SetItemText(pDispInfo->item.iItem, 0, newText);
+		m_categoryList.SetItemText(pDispInfo->item.iItem, 1, L"0");
 
 		g_data.AddCategory(newText.GetString());
 
@@ -182,6 +184,39 @@ void CQuickNoteDlg::OnLvnEndlabeleditListctrl(NMHDR* pNMHDR, LRESULT* pResult)
 	}
 
 	*pResult = 0; // 1 表示接受用户修改，0 表示取消
+}
+
+BOOL CQuickNoteDlg::OnEraseBkgnd(CDC* pDC)
+{
+	if (m_bmpBackground.GetSafeHandle())
+	{
+		// 创建内存 DC 并选入位图
+		CDC memDC;
+		memDC.CreateCompatibleDC(pDC);
+		CBitmap* pOldBmp = memDC.SelectObject(&m_bmpBackground);
+
+		// 获取对话框大小
+		CRect rect;
+		GetClientRect(&rect);
+
+		// 获取图片大小
+		BITMAP bmp = {};
+		m_bmpBackground.GetBitmap(&bmp);
+
+		// 平铺或拉伸背景
+		for (int y = 0; y < rect.Height(); y += bmp.bmHeight)
+		{
+			for (int x = 0; x < rect.Width(); x += bmp.bmWidth)
+			{
+				pDC->BitBlt(x, y, bmp.bmWidth, bmp.bmHeight, &memDC, 0, 0, SRCCOPY);
+			}
+		}
+
+		memDC.SelectObject(pOldBmp);
+		return TRUE;  // 表示我们自己处理了背景擦除
+	}
+
+	return CDialog::OnEraseBkgnd(pDC);
 }
 
 
@@ -223,6 +258,7 @@ int CQuickNoteDlg::CalculateOptimalListHeight(int itemCount)
 BOOL CQuickNoteDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
+	m_bmpBackground.LoadBitmap(IDB_BACKGROUND);
 	m_categoryList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	m_categoryList.InsertColumn(0, L"分类", LVCFMT_LEFT, 150);
 	m_categoryList.InsertColumn(1, L"笔记数", LVCFMT_LEFT, 150);
@@ -373,3 +409,4 @@ void CQuickNoteDlg::OnBnClickedBtnDelete()
 	m_categoryList.EditLabel(index); // 立即进入编辑状态
 
 }
+

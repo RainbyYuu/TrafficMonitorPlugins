@@ -39,6 +39,7 @@ protected:
     void UpdateCategoriesList();
     afx_msg void OnTimer(UINT_PTR nIDEvent);
     afx_msg void OnLvnEndlabeleditListctrl(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     DECLARE_MESSAGE_MAP()
 
 private:
@@ -62,6 +63,8 @@ private:
     int m_itemHeight;              // 每项的高度
     bool m_isListBoxVisible;       // ListBox是否可见
     std::vector<NoteData> searchResults;
+    CBitmap m_bmpBackground;
+    CBrush m_brush;
 public:
     afx_msg void OnBnClickedBtnOpen();
     afx_msg void OnBnClickedBtnDelete();

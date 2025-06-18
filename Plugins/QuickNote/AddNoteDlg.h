@@ -25,5 +25,9 @@ protected:
     virtual BOOL OnInitDialog();
     virtual void OnOK();
     afx_msg void OnCbnSelchangeCategoryOption();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     DECLARE_MESSAGE_MAP()
+private:
+    CBitmap m_bmpBackground;
+    CBrush m_brush;
 };

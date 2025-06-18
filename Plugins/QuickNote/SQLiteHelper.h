@@ -20,7 +20,7 @@ public:
 
     bool Init(const std::wstring& dbPath);
     bool DeleteNote(int id);
-    bool UpdateNote(int id, const std::wstring& newText);
+    bool UpdateNote(int id, const std::wstring& newText, const std::wstring& summary, int categoryId);
     std::vector<NoteData> GetAllNotes();
     bool Open(const std::wstring& dbPath);
     bool Execute(const std::wstring& sql, const std::vector<std::wstring>& params = {});

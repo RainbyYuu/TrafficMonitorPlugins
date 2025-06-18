@@ -1,5 +1,6 @@
 #pragma once
 #include "DataManager.h"
+#include "ImageButton.h"
 #include <afxdialogex.h>
 
 class COptionsDlg : public CDialog
@@ -28,10 +29,16 @@ protected:
     afx_msg void OnLvnItemActivateNotesList(NMHDR* pNMHDR, LRESULT* pResult);
     void UpdateNotesList();
     afx_msg void OnBnClickedReturnMain();
+    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
     DECLARE_MESSAGE_MAP()
 
 private:
     CListCtrl m_notesList; // 声明与 IDC_NOTES_LIST 关联的成员变量
     int categoryId;
+    CBitmap m_bmpBackground;
+    CBrush m_brush;
+	CImageButton m_btnAddNote;
+	CImageButton m_btnDeleteNote;
+	CImageButton m_btnReturnMain;
 };
