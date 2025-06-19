@@ -5,12 +5,6 @@
 
 IMPLEMENT_DYNAMIC(CAddNoteDlg, CDialog)
 
-//COptionsDlg::COptionsDlg(CDataManager* data_manager, CWnd* pParent)
-//    : CDialog(IDD_OPTIONS_DIALOG, pParent)
-//    , m_data_manager(data_manager)
-//{
-//}
-
 CAddNoteDlg::CAddNoteDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(IDD_ADDNOTE_DIALOG, pParent)
 {

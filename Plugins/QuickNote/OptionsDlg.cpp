@@ -7,12 +7,6 @@
 
 IMPLEMENT_DYNAMIC(COptionsDlg, CDialog)
 
-//COptionsDlg::COptionsDlg(CDataManager* data_manager, CWnd* pParent)
-//    : CDialog(IDD_OPTIONS_DIALOG, pParent)
-//    , m_data_manager(data_manager)
-//{
-//}
-
 COptionsDlg::COptionsDlg(CWnd* pParent /*=nullptr*/, int categoryId)
     : CDialog(IDD_OPTIONS_DIALOG, pParent), categoryId(categoryId)
 {
@@ -53,6 +47,17 @@ BOOL COptionsDlg::OnInitDialog()
     m_notesList.InsertColumn(1, L"创建时间", LVCFMT_LEFT, 150);
     m_notesList.InsertColumn(2, L"修改时间", LVCFMT_LEFT, 150);
 
+    vector<std::pair<int, std::wstring>>ca = g_data.m_setting_data.category;
+    //加载当前分类名
+    for (int i = 0; i < ca.size(); i++)
+    {
+        if (ca[i].first == categoryId)
+        {
+            categoryName = ca[i].second.c_str();
+            break;
+        }
+    }
+
     // 初始化对话框
     UpdateNotesList();
 
@@ -66,16 +71,9 @@ void COptionsDlg::OnAddNote()
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CAddNoteDlg dlg(this);
-    vector<std::pair<int, std::wstring>>ca = g_data.m_setting_data.category;
-    //在combobox显示本分类名
-    for (int i = 0; i < ca.size(); i++)
-    {
-        if (ca[i].first == categoryId)
-        {
-            dlg.m_strCategory = ca[i].second.c_str();
-            break;
-        }
-    }
+
+    dlg.m_strCategory = categoryName;
+
     if (dlg.DoModal() == IDOK)
     {
         if (!dlg.m_strNote.IsEmpty())
@@ -97,10 +95,6 @@ void COptionsDlg::OnDeleteNote()
     if (pos)
     {
         int sel = pList->GetNextSelectedItem(pos);
-        //CString str = pList->GetItemText(sel, 0);  // 取第一列文本
-        //CString msg;
-        //msg.Format(L"你选中了第 %d 行: %s", sel + 1, str);
-        //MessageBox(msg, L"调试信息");
         if (pList)
         {
             if (sel != -1)
@@ -132,16 +126,8 @@ void COptionsDlg::OnLvnItemActivateNotesList(NMHDR* pNMHDR, LRESULT* pResult)
 
         dlg.m_strNote = note.text.c_str();// 填入原始笔记内容
 
-        vector<std::pair<int, std::wstring>>ca = g_data.m_setting_data.category;
-        int cid = note.categoryId;
-        for (int i = 0; i < ca.size(); i++)
-        {
-            if (ca[i].first == cid)
-            {
-                dlg.m_strCategory = ca[i].second.c_str();
-                break;
-            }
-        }
+        dlg.m_strCategory = categoryName;
+
 
         if (dlg.DoModal() == IDOK)
         {
