@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(CQuickNoteDlg, CDialog)
 	ON_NOTIFY(LVN_ENDLABELEDIT, IDC_CATEGORY_LIST, &CQuickNoteDlg::OnLvnEndlabeleditListctrl)
 	ON_BN_CLICKED(IDC_BTN_OPEN, &CQuickNoteDlg::OnBnClickedBtnOpen)
 	ON_BN_CLICKED(IDC_BTN_DELETE, &CQuickNoteDlg::OnBnClickedBtnDelete)
+	ON_NOTIFY(NM_DBLCLK, IDC_CATEGORY_LIST, &CQuickNoteDlg::OnNMDblclkCategoryList)
 	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
@@ -179,7 +180,8 @@ void CQuickNoteDlg::OnLvnEndlabeleditListctrl(NMHDR* pNMHDR, LRESULT* pResult)
 		g_data.AddCategory(newText.GetString());
 
 		int index = m_categoryList.InsertItem(m_categoryList.GetItemCount(), _T("双击添加分类"));
-		m_categoryList.EditLabel(index); // 立即进入编辑状态
+		m_categoryList.EditLabel(index);
+
 		LoadCategories();
 	}
 
@@ -217,6 +219,16 @@ BOOL CQuickNoteDlg::OnEraseBkgnd(CDC* pDC)
 	}
 
 	return CDialog::OnEraseBkgnd(pDC);
+}
+
+void CQuickNoteDlg::OnNMDblclkCategoryList(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMITEMACTIVATE pNMItem = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	if (pNMItem->iItem >= 0)
+	{
+		m_categoryList.EditLabel(pNMItem->iItem);  // 启动编辑
+	}
+	*pResult = 0;
 }
 
 
@@ -268,8 +280,10 @@ BOOL CQuickNoteDlg::OnInitDialog()
 	// 初始化对话框
 	UpdateCategoriesList();
 
+	//int index = m_categoryList.InsertItem(m_categoryList.GetItemCount(), _T("双击添加分类"));
+	//m_categoryList.EditLabel(index); // 立即进入编辑状态
 	int index = m_categoryList.InsertItem(m_categoryList.GetItemCount(), _T("双击添加分类"));
-	m_categoryList.EditLabel(index); // 立即进入编辑状态
+	m_categoryList.EditLabel(index);
 
 	InitializeLayout();
 
@@ -406,7 +420,6 @@ void CQuickNoteDlg::OnBnClickedBtnDelete()
 	}
 	
 	int index = m_categoryList.InsertItem(m_categoryList.GetItemCount(), _T("双击添加分类"));
-	m_categoryList.EditLabel(index); // 立即进入编辑状态
-
+	m_categoryList.EditLabel(index);
 }
 

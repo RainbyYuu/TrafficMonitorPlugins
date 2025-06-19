@@ -34,6 +34,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 
 private:
+	std::vector<NoteData> notes;
     CListCtrl m_notesList; // 声明与 IDC_NOTES_LIST 关联的成员变量
     int categoryId;
     CBitmap m_bmpBackground;

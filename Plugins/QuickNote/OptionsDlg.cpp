@@ -66,11 +66,25 @@ void COptionsDlg::OnAddNote()
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CAddNoteDlg dlg(this);
+    vector<std::pair<int, std::wstring>>ca = g_data.m_setting_data.category;
+    //在combobox显示本分类名
+    for (int i = 0; i < ca.size(); i++)
+    {
+        if (ca[i].first == categoryId)
+        {
+            dlg.m_strCategory = ca[i].second.c_str();
+            break;
+        }
+    }
     if (dlg.DoModal() == IDOK)
     {
         if (!dlg.m_strNote.IsEmpty())
         {
-            g_data.AddNote(dlg.m_strNote.GetString(), dlg.m_comboCategoryId);
+            if (dlg.m_comboCategoryId)
+            {   //如果选择了分类，获取分类ID
+                g_data.AddNote(dlg.m_strNote.GetString(), dlg.m_comboCategoryId);
+            }//如果未选择分类，加入笔记所属分类
+            else g_data.AddNote(dlg.m_strNote.GetString(), categoryId);
             UpdateNotesList();
         }
     }
@@ -110,7 +124,6 @@ void COptionsDlg::OnLvnItemActivateNotesList(NMHDR* pNMHDR, LRESULT* pResult)
     int sel = m_notesList.GetNextItem(-1, LVNI_SELECTED);
     if (sel >= 0)
     {
-        const auto& notes = g_data.GetNotes();
         if (sel >= notes.size()) return;
 
         const NoteData& note = notes[sel];
@@ -142,11 +155,12 @@ void COptionsDlg::OnLvnItemActivateNotesList(NMHDR* pNMHDR, LRESULT* pResult)
     *pResult = 0;
 }
 
+//在此处更新笔记列表，存入私有属性notes中
 void COptionsDlg::UpdateNotesList()
 {
     m_notesList.DeleteAllItems();
 
-    const auto& notes = g_data.getNotesWithCategoryId(categoryId);
+    notes = g_data.getNotesWithCategoryId(categoryId);
     if (notes.empty()) return;
 
     int index = 0;

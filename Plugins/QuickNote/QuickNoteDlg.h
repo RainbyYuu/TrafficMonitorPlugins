@@ -40,6 +40,7 @@ protected:
     afx_msg void OnTimer(UINT_PTR nIDEvent);
     afx_msg void OnLvnEndlabeleditListctrl(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg void OnNMDblclkCategoryList(NMHDR* pNMHDR, LRESULT* pResult);;
     DECLARE_MESSAGE_MAP()
 
 private:
