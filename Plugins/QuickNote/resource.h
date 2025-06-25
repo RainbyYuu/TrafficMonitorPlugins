@@ -22,8 +22,23 @@
 #define IDB_DEL_HOVER                   135
 #define IDB_PRINT_DOWN                  136
 #define IDB_PRINT_HOVER                 137
-#define IDB_RETURN_MAIN                 138
 #define IDB_RETURN                      138
+#define IDB_BITMAP1                     139
+#define IDB_PRINT_NORMAL                139
+#define IDB_ADD_DARK_DOWN               148
+#define IDB_ADD_DARK_HOVER              149
+#define IDB_ADD_DARK_NORMAL             150
+#define IDB_ADD_PINK_DOWN               151
+#define IDB_ADD_PINK_HOVER              152
+#define IDB_BITMAP7                     153
+#define IDB_ADD_PINK_NORMAL             153
+#define IDB_DEL_DARK_DOWN               160
+#define IDB_DEL_DARK_HOVER              161
+#define IDB_DEL_DARK_NORMAL             162
+#define IDB_DEL_PINK_DOWN               163
+#define IDB_DEL_PINK_HOVER              164
+#define IDB_BITMAP8                     165
+#define IDB_DEL_PINK_NORMAL             165
 #define IDC_ADD_NOTE                    1002
 #define IDC_RETURN_MAIN                 1003
 #define IDC_NOTES_LIST                  1004
@@ -40,14 +55,15 @@
 #define IDC_BTN_SEARCH                  1015
 #define IDC_CATEGORY_OPTION             1018
 #define IDC_PRINT_BUTTON                1019
+#define IDC_BTN_BATCH_PRINT             1020
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        139
+#define _APS_NEXT_RESOURCE_VALUE        166
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1020
+#define _APS_NEXT_CONTROL_VALUE         1021
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

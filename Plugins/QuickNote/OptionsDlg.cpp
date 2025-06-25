@@ -23,6 +23,7 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ADD_NOTE, m_btnAddNote);
     DDX_Control(pDX, IDC_DELETE_NOTE, m_btnDeleteNote);
     DDX_Control(pDX, IDC_RETURN_MAIN, m_btnReturnMain);
+    DDX_Control(pDX, IDC_BTN_BATCH_PRINT, m_btnBatchPrint);
 }
 
 BEGIN_MESSAGE_MAP(COptionsDlg, CDialog)
@@ -30,6 +31,7 @@ BEGIN_MESSAGE_MAP(COptionsDlg, CDialog)
     ON_BN_CLICKED(IDC_DELETE_NOTE, &COptionsDlg::OnDeleteNote)
     ON_NOTIFY(NM_DBLCLK, IDC_NOTES_LIST, &COptionsDlg::OnLvnItemActivateNotesList)
     ON_BN_CLICKED(IDC_RETURN_MAIN, &COptionsDlg::OnBnClickedReturnMain)
+    ON_BN_CLICKED(IDC_BTN_BATCH_PRINT, &COptionsDlg::OnBnClickedBatchPrint) // 映射新按钮
     ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
@@ -41,8 +43,12 @@ BOOL COptionsDlg::OnInitDialog()
     m_btnAddNote.LoadBitmaps(IDB_ADD_NORMAL,IDB_ADD_HOVER,IDB_ADD_DOWN);
 	m_btnDeleteNote.LoadBitmaps(IDB_DEL_HOVER, IDB_DEL_HOVER, IDB_DEL_DOWN);
 	m_btnReturnMain.LoadBitmaps(IDB_RETURN, IDB_RETURN, IDB_RETURN);
+    m_btnBatchPrint.LoadBitmaps(IDB_PRINT_NORMAL, IDB_PRINT_HOVER, IDB_PRINT_DOWN);
 
-    m_notesList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+    m_btnAddNote.SetButtonID(IDC_ADD_NOTE);
+    m_btnDeleteNote.SetButtonID(IDC_DELETE_NOTE);
+
+    m_notesList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_CHECKBOXES);
     m_notesList.InsertColumn(0, L"内容", LVCFMT_LEFT, 200);
     m_notesList.InsertColumn(1, L"创建时间", LVCFMT_LEFT, 150);
     m_notesList.InsertColumn(2, L"修改时间", LVCFMT_LEFT, 150);
@@ -131,7 +137,7 @@ void COptionsDlg::OnLvnItemActivateNotesList(NMHDR* pNMHDR, LRESULT* pResult)
 
         if (dlg.DoModal() == IDOK)
         {
-            g_data.UpdateNoteTextById(note.id, dlg.m_strNote.GetString(), note.categoryId);
+            g_data.UpdateNoteTextById(note.id, dlg.m_strNote.GetString(), dlg.m_comboCategoryId);
 
             UpdateNotesList();
         }
@@ -208,4 +214,39 @@ BOOL COptionsDlg::OnEraseBkgnd(CDC* pDC)
     }
 
     return CDialog::OnEraseBkgnd(pDC);
+}
+
+void COptionsDlg::OnBnClickedBatchPrint()
+{
+
+    for (int i = 0; i < m_notesList.GetItemCount(); ++i)
+    {
+        if (m_notesList.GetCheck(i)) // 检查是否选中
+        {
+            if (i < notes.size())
+            {
+                CString noteText = notes[i].text.c_str();
+                PrintNote(noteText);
+            }
+        }
+    }
+}
+
+void COptionsDlg::PrintNote(const CString& noteText)
+{
+    CPrintDialog printDlg(FALSE);
+    if (printDlg.DoModal() == IDOK)
+    {
+        CDC dc;
+        dc.Attach(printDlg.GetPrinterDC());
+        dc.StartDoc(_T("打印笔记"));
+        dc.StartPage();
+
+        dc.TextOut(100, 100, noteText); // 简单打印内容，可换成换行处理
+
+        dc.EndPage();
+        dc.EndDoc();
+        dc.Detach();
+        this->MessageBox(_T("打印成功"), _T("提示"), MB_OK | MB_ICONINFORMATION);
+    }
 }

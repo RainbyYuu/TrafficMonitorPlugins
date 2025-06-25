@@ -192,5 +192,44 @@
     <Image Include="..\..\..\bmp\mainbtn.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="..\..\..\bmp\printbtn.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\adddarkbtndown.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\adddarkbtnhover.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\adddarkbtnnormal.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\addpinkbtndown.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\addpinkbtnhover.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\addpinkbtnnormal.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\deldarkbtndown.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\deldarkbtnhover.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\deldarkbtnnormal.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\delpinkbtndown.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\delpinkbtnhover.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="..\..\..\bmp\delpinkbtnnormal.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

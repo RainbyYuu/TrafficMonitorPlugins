@@ -172,17 +172,23 @@ void CQuickNoteDlg::OnLvnEndlabeleditListctrl(NMHDR* pNMHDR, LRESULT* pResult)
 	if (pDispInfo->item.pszText != nullptr)
 	{
 		CString newText = pDispInfo->item.pszText;
+		if (newText == "")
+		{
+			this->MessageBox(_T("输入为空"), _T("提示"), MB_OK | MB_ICONINFORMATION);
+		}
+		else
+		{
+			// 更新项文本
+			m_categoryList.SetItemText(pDispInfo->item.iItem, 0, newText);
+			m_categoryList.SetItemText(pDispInfo->item.iItem, 1, L"0");
 
-		// 更新项文本
-		m_categoryList.SetItemText(pDispInfo->item.iItem, 0, newText);
-		m_categoryList.SetItemText(pDispInfo->item.iItem, 1, L"0");
+			g_data.AddCategory(newText.GetString());
 
-		g_data.AddCategory(newText.GetString());
+			int index = m_categoryList.InsertItem(m_categoryList.GetItemCount(), _T("双击添加分类"));
+			m_categoryList.EditLabel(index);
 
-		int index = m_categoryList.InsertItem(m_categoryList.GetItemCount(), _T("双击添加分类"));
-		m_categoryList.EditLabel(index);
-
-		LoadCategories();
+			LoadCategories();
+		}
 	}
 
 	*pResult = 0; // 1 表示接受用户修改，0 表示取消
@@ -371,7 +377,7 @@ void CQuickNoteDlg::OnBnClickedBtnOpen()
 	int selectedIndex = m_categoryList.GetNextItem(-1, LVNI_SELECTED);
 	if (selectedIndex == -1)
 	{
-		AfxMessageBox(_T("请先选择一个分类"));
+		this->MessageBox(_T("请选择一个分类"), _T("提示"), MB_OK | MB_ICONINFORMATION);
 		return;
 	}
 
@@ -389,18 +395,17 @@ void CQuickNoteDlg::OnBnClickedBtnDelete()
 	int selectedIndex = m_categoryList.GetNextItem(-1, LVNI_SELECTED);
 	if (selectedIndex == -1)
 	{
-		AfxMessageBox(_T("请先选择一个分类"));
+		this->MessageBox(_T("请选择一个分类"), _T("提示"), MB_OK | MB_ICONINFORMATION);
 		return;
 	}
 	else if (selectedIndex >= g_data.m_setting_data.category.size())
 	{
-		AfxMessageBox(_T("选择分类无效"));
+		this->MessageBox(_T("选择分类无效"), _T("提示"), MB_OK | MB_ICONINFORMATION);
 		return;
 	}
 	else
 	{
-		int result = AfxMessageBox(_T("确定删除该分类及其所属笔记吗？"), MB_YESNO | MB_ICONQUESTION);
-
+		int result = MessageBox(_T("确定删除该分类及其所属笔记吗？"),_T("提示"),MB_YESNO | MB_ICONQUESTION | MB_TOPMOST);
 		if (result == IDYES)
 		{
 			int categoryId = g_data.m_setting_data.category[selectedIndex].first;

@@ -18,6 +18,7 @@ void CEditNoteDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_CATEGORY_OPTION, m_comboCategory);
     DDX_Text(pDX, IDC_NOTE_EDIT, m_strNote);
     DDX_Text(pDX, IDC_CATEGORY_OPTION, m_strCategory);
+    DDX_Control(pDX, IDC_PRINT_BUTTON, m_printNote);
 }
 
 BEGIN_MESSAGE_MAP(CEditNoteDlg, CDialog)
@@ -31,6 +32,7 @@ BOOL CEditNoteDlg::OnInitDialog()
     CDialog::OnInitDialog();
 
     m_bmpBackground.LoadBitmap(IDB_BACKGROUND2);
+    m_printNote.LoadBitmaps(IDB_PRINT_NORMAL, IDB_PRINT_HOVER, IDB_PRINT_DOWN);
 
     UpdateData(FALSE);
 
@@ -103,7 +105,10 @@ BOOL CEditNoteDlg::OnEraseBkgnd(CDC* pDC)
 
 void CEditNoteDlg::OnBnClickedPrintButton()
 {
-    PrintNote(m_strNote);
+    if (m_strNote == L"")
+    {
+        this->MessageBox(_T("打印内容为空"), _T("提示"), MB_OK | MB_ICONINFORMATION);
+    }else PrintNote(m_strNote);
 }
 
 void CEditNoteDlg::PrintNote(const CString& noteText)

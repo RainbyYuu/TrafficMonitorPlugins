@@ -30,6 +30,8 @@ protected:
     void UpdateNotesList();
     afx_msg void OnBnClickedReturnMain();
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+    afx_msg void OnBnClickedBatchPrint(); // 新增
+    void PrintNote(const CString& noteText); // 单条打印
 
     DECLARE_MESSAGE_MAP()
 
@@ -43,4 +45,5 @@ private:
 	CImageButton m_btnAddNote;
 	CImageButton m_btnDeleteNote;
 	CImageButton m_btnReturnMain;
+    CImageButton m_btnBatchPrint;
 };

@@ -1,7 +1,7 @@
 #pragma once
 #include "DataManager.h"
 #include <afxdialogex.h>
-
+#include "ImageButton.h"
 
 class CEditNoteDlg : public CDialog
 {
@@ -32,4 +32,5 @@ protected:
 private:
     CBitmap m_bmpBackground;
     CBrush m_brush;
+    CImageButton m_printNote;
 };
